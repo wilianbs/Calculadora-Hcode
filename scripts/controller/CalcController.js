@@ -1,5 +1,6 @@
 class CalcController {
     constructor(){
+        this._operation = []
         this._locale = 'pt-BR'
         this._displayCalcEl = document.querySelector("#display")
         this._dataEl = document.querySelector("#data")
@@ -41,6 +42,103 @@ class CalcController {
         })
 
     }
+    clearAll(){
+        this._operation = []
+
+    }
+    clearEntry(){
+        this._operation.pop()
+
+    }
+    getLastOperation(value){
+        return this._operation[this._operation.length-1]
+    }
+    
+    isOperator(value){
+        return (['+','-','*','/','%'].indexOf(value) > -1)
+    }
+
+    addOperation(value){
+
+        if(isNaN(this.getLastOperation())){
+            //false "String"
+            if(this.isOperator(value)){
+                //Trocar o Operador
+                this._operation[this._operation.length-1] = value
+
+            }else{
+                //Digitou um numero
+                console.log(value)
+            }
+
+
+        }else {
+            //True "Number"
+            let newValue = this.getLastOperation().toString() + value.toString
+            this._operation.push(newValue)
+        }
+
+        
+
+        console.log(this._operation)
+
+    }
+    setError(){
+        this.displayCalc = "ERROR"
+
+    }
+
+
+
+    execBtn(value){
+        switch(value){
+            case 'ac':
+                this.clearAll()
+                break
+            case 'ce':
+                this.clearEntry()
+                break
+            case 'soma':
+                
+                break
+            case 'subtracao':
+                
+                break
+            case 'divisao':
+                
+                break
+            case 'multiplicacao':
+                
+                break
+            case 'porcento':
+                
+                break
+            case 'igual':
+                
+                break
+            case 'ponto':
+                
+                break
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value))
+                break
+
+            default:
+                this.setError()
+                break
+        }
+        
+    }
 
     initButtonsEvents(){
 
@@ -50,12 +148,16 @@ class CalcController {
         
         this.addEventListenerAll(btn, "click drag", e =>{
 
-            console.log(btn.className.baseVal.replace("btn-", ""))
+            let texBtn = btn.className.baseVal.replace("btn-", "")
+            console.log(texBtn)
+
+            this.execBtn(texBtn)
+
         })
 
         this.addEventListenerAll(btn, "mouseover mouseup mousedown", e =>{
 
-            btn.style.cursor = " pointer"
+            btn.style.cursor = "pointer"
         })
 
        })
